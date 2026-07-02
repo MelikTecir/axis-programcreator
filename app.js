@@ -54,7 +54,8 @@ function setCategoryFilter(category) {
         'TYT': 'btn-tyt',
         'AYT': 'btn-ayt',
         'LGS': 'btn-lgs',
-        '7. Sınıf': 'btn-7'
+        '7. Sınıf': 'btn-7',
+        '6. Sınıf': 'btn-6'
     };
 
     Object.values(btnIds).forEach(id => {
