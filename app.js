@@ -49,28 +49,29 @@ let currentSubjectFilter = '';
 function setCategoryFilter(category) {
     currentCategoryFilter = category;
     currentSubjectFilter = '';
-    
+
     const btnIds = {
         'TYT': 'btn-tyt',
         'AYT': 'btn-ayt',
         'LGS': 'btn-lgs',
-        '7. Sınıf': 'btn-7'
+        '7. Sınıf': 'btn-7',
+        '6. Sınıf': 'btn-6'
     };
-    
+
     Object.values(btnIds).forEach(id => {
         const btn = document.getElementById(id);
-        if(btn) {
+        if (btn) {
             btn.classList.remove('bg-blue-600', 'text-white');
             btn.classList.add('bg-gray-200', 'text-gray-700');
         }
     });
-    
+
     const activeBtn = document.getElementById(btnIds[category]);
     if (activeBtn) {
         activeBtn.classList.add('bg-blue-600', 'text-white');
         activeBtn.classList.remove('bg-gray-200', 'text-gray-700');
     }
-    
+
     renderSubjectButtons();
     populateDropdown(document.getElementById('searchInput').value);
 }
@@ -78,12 +79,12 @@ function setCategoryFilter(category) {
 function renderSubjectButtons() {
     const container = document.getElementById('subTopicContainer');
     container.innerHTML = "";
-    
+
     const matchingSubjects = Object.keys(konularData).filter(ders => ders.startsWith(currentCategoryFilter));
-    
+
     if (matchingSubjects.length > 0) {
         container.classList.remove('hidden');
-        
+
         const allBtn = document.createElement('button');
         allBtn.className = `px-2 py-1 text-[9px] font-bold rounded flex-shrink-0 transition-colors ${currentSubjectFilter === '' ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`;
         allBtn.textContent = 'TÜMÜ';
@@ -93,7 +94,7 @@ function renderSubjectButtons() {
             populateDropdown(document.getElementById('searchInput').value);
         };
         container.appendChild(allBtn);
-        
+
         matchingSubjects.forEach(ders => {
             let cleanName = ders.replace(currentCategoryFilter, '').trim() || ders;
 
@@ -154,7 +155,7 @@ function populateDropdown(filter = "") {
             if (!filter || combined.toLowerCase().includes(lc)) {
                 const opt = document.createElement('div');
                 opt.className = 'px-2 py-1.5 cursor-pointer text-gray-700 hover:bg-blue-500 hover:text-white transition-colors text-xs flex justify-between items-center group opt-item';
-                
+
                 const spanKonu = document.createElement('span');
                 spanKonu.className = 'truncate';
                 spanKonu.textContent = konu;
@@ -166,7 +167,7 @@ function populateDropdown(filter = "") {
                     spanDers.textContent = cleanDersAdı;
                     opt.appendChild(spanDers);
                 }
-                
+
                 opt.draggable = true;
 
                 if (select.value === combined) {
@@ -183,7 +184,7 @@ function populateDropdown(filter = "") {
                     opt.classList.add('bg-blue-500', 'text-white');
                     opt.classList.remove('text-gray-700');
                 });
-                
+
                 opt.addEventListener('dblclick', () => {
                     select.value = combined;
                     addItem();
@@ -192,7 +193,7 @@ function populateDropdown(filter = "") {
                 opt.addEventListener('dragstart', (e) => {
                     e.dataTransfer.setData('text/plain', combined);
                     e.dataTransfer.effectAllowed = 'copy';
-                    
+
                     select.value = combined;
                     Array.from(select.parentElement.querySelectorAll('.opt-item')).forEach(child => {
                         child.classList.remove('bg-blue-500', 'text-white');
@@ -723,6 +724,7 @@ async function saveToCloud() {
         if (error) throw error;
 
         await generatePDF(code);
+        document.getElementById('display-code').innerText = code;
         showNotification('Program Kaydedildi. Kodunuz: ' + code, 'success');
 
         document.getElementById('code-input').value = code;
@@ -741,8 +743,9 @@ async function saveToCloud() {
 // ============================================================
 async function loadFontsToDoc(doc) {
     const urls = {
-        'Roboto-Regular': 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Regular.ttf',
-        'Roboto-Medium': 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Medium.ttf'
+        'Montserrat-Regular': 'Montserrat-Regular.ttf',
+        'Montserrat-Bold': 'Montserrat-Bold.ttf',
+        'Montserrat-Black': 'Montserrat-Black.ttf'
     };
     for (let fontName in urls) {
         try {
@@ -754,7 +757,10 @@ async function loadFontsToDoc(doc) {
                 binary += String.fromCharCode(bytes[i]);
             }
             doc.addFileToVFS(`${fontName}.ttf`, window.btoa(binary));
-            doc.addFont(`${fontName}.ttf`, "Roboto", fontName === 'Roboto-Medium' ? "bold" : "normal");
+            let style = "normal";
+            if (fontName === 'Montserrat-Bold') style = "bold";
+            if (fontName === 'Montserrat-Black') style = "black";
+            doc.addFont(`${fontName}.ttf`, "Montserrat", style);
         } catch (e) {
             console.error("Font yüklenemedi:", e);
         }
@@ -773,47 +779,79 @@ async function generatePDF(code) {
 
     await loadFontsToDoc(doc);
 
-    // Varsayılan font Roboto olsun (Türkçe karakter destekli)
-    doc.setFont("Roboto", "bold");
+    // Varsayılan font Montserrat olsun (Türkçe karakter destekli)
+    doc.setFont("Montserrat", "bold");
 
-    // Başlık
-    doc.setFontSize(22);
+    // ── HEADER (kompakt tek blok) ──────────────────────────────
+    const LOGO_H_MM = 12;
+    const LOGO_X = 14;
+    const LOGO_Y = 7;
+    let logoWidthMM = 0;
+
+    try {
+        const logoRes = await fetch('polinom-logo.jpg');
+        const logoBlob = await logoRes.blob();
+        const logoB64 = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(logoBlob);
+        });
+        const imgEl = await new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+            img.src = logoB64;
+        });
+        const ratio = imgEl.naturalWidth / imgEl.naturalHeight;
+        logoWidthMM = LOGO_H_MM * ratio;
+        doc.addImage(logoB64, 'JPEG', LOGO_X, LOGO_Y, logoWidthMM, LOGO_H_MM);
+    } catch (e) {
+        console.warn('Logo PDF\'e eklenemedi:', e);
+    }
+
+    const titleX = LOGO_X + logoWidthMM + 3;
+    const logoMidY = LOGO_Y + LOGO_H_MM / 2;
+    const logoBottomY = LOGO_Y + LOGO_H_MM;
+
+    // SOL: Kurum başlığı
+    doc.setFont("Montserrat", "black");
+    doc.setFontSize(14);
     doc.setTextColor(0, 0, 0);
-    const titleLines = doc.splitTextToSize('HAFTALIK ÇALIŞMA PROGRAMI', 80);
-    doc.text(titleLines, 14, 20);
-    const titleHeight = (titleLines.length - 1) * 9; // Her satır için ~9mm ekstra
+    doc.text('POLİNOM EĞİTİM KURUMLARI', titleX, logoMidY - 1);
 
-    // Sağ Üst Bölüm (Öğrenci Adı)
+    // SOL ALT: Kod (başlığın hemen altında, logoMidY + 3)
+    doc.setFont("Montserrat", "bold");
+    doc.setFontSize(8.5);
+    doc.setTextColor(70, 70, 70);
+    doc.text(code, titleX, logoMidY + 3.5);
+
+    // SAĞ: Öğrenci adı (logo üst kenarından başlar, max 62mm genişlik)
     const rawStudentName = programData.studentName || "ÖĞRENCİ ADI";
-    doc.setFont("Roboto", "bold");
-    doc.setFontSize(18);
-    const nameLines = doc.splitTextToSize(rawStudentName.toLocaleUpperCase('tr-TR'), 80);
-    doc.text(nameLines, 196, 20, { align: 'right' });
-    const nameHeight = (nameLines.length - 1) * 7.5; // Her satır için ~7.5mm ekstra
+    doc.setFont("Montserrat", "black");
+    doc.setFontSize(13);
+    doc.setTextColor(0, 0, 0);
+    const nameLines = doc.splitTextToSize(rawStudentName.toLocaleUpperCase('tr-TR'), 62);
+    const lineH = 4.5;
+    const nameTopY = LOGO_Y + 3.5;
+    nameLines.forEach((line, i) => {
+        doc.text(line, 196, nameTopY + i * lineH, { align: 'right' });
+    });
 
-    // Alt Başlık (Kod ve Tarih) Y Koordinatını Hesapla
-    const subY = 20 + Math.max(titleHeight, nameHeight) + 6;
-
-    // Kodu göster (Alt Başlık)
-    doc.setFont("Roboto", "normal");
-    doc.setFontSize(10);
-    doc.setTextColor(150, 150, 150);
-    doc.text(code, 14, subY);
-
-    // Tarih
+    // SAĞ ALT: Tarih (her zaman logo altında, sabit)
     const dateText = document.getElementById('display-date').innerText;
-    doc.setFont("Roboto", "normal");
-    doc.setFontSize(10);
-    doc.setTextColor(150, 150, 150);
-    doc.text(dateText, 196, subY, { align: 'right' });
+    doc.setFont("Montserrat", "bold");
+    doc.setFontSize(8.5);
+    doc.setTextColor(70, 70, 70);
+    doc.text(dateText, 196, logoBottomY + 1.5, { align: 'right' });
 
-    // Ayrım Çizgisi
-    const lineY = subY + 4;
-    doc.setDrawColor(220, 220, 220);
-    doc.setLineWidth(0.5);
+    // Ayırıcı çizgi: SADECE logo yüksekliğine bağlı (sabit)
+    const lineY = logoBottomY + 5;
+    doc.setDrawColor(210, 210, 210);
+    doc.setLineWidth(0.4);
     doc.line(14, lineY, 196, lineY);
 
-    const tableStartY = lineY + 4;
+    const tableStartY = lineY + 3;
 
     // Tablo Başlıkları (Gün isimleri + Tarih)
     const days = ['PAZARTESİ', 'SALI', 'ÇARŞAMBA', 'PERŞEMBE', 'CUMA', 'CUMARTESİ', 'PAZAR'];
@@ -863,7 +901,7 @@ async function generatePDF(code) {
         startY: tableStartY,
         theme: 'plain',
         styles: {
-            font: "Roboto",
+            font: "Montserrat",
             overflow: 'linebreak',
             cellWidth: 26,
             cellPadding: { top: 1, bottom: 1, left: 1.5, right: 1.5 }
@@ -939,7 +977,7 @@ async function generatePDF(code) {
     });
 
     // Alt metin (meliktecir)
-    doc.setFont("Roboto", "normal");
+    doc.setFont("Montserrat", "normal");
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 150);
     doc.text('meliktecir', 196, 290, { align: 'right' });
@@ -1084,6 +1122,7 @@ async function loadFromCloud() {
         }
 
         renderTable();
+        document.getElementById('display-code').innerText = code;
         showNotification('Program yüklendi!', 'success');
         codeInput.value = '';
 
