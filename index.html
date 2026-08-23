@@ -34,11 +34,26 @@
     <!-- Sol Panel -->
     <div
         class="w-full md:w-96 bg-white shadow-2xl p-6 no-print md:sticky md:top-0 md:h-screen overflow-y-auto flex-shrink-0 z-10">
-        <div class="flex justify-between items-center mb-4 border-b-2 border-gray-100 pb-2">
-            <h1 class="text-xl font-black text-gray-800 uppercase tracking-tighter">
-                Program Ayarları
-            </h1>
+                <div class="flex justify-between items-center mb-4 border-b-2 border-gray-100 pb-2">
+            
+            <!-- Başlık ve Yeni Buton Grubu -->
+            <div class="flex items-center gap-3">
+                <h1 class="text-xl font-black text-gray-800 uppercase tracking-tighter">
+                    Program Ayarları
+                </h1>
+                
+                <!-- Axis Manage Butonu -->
+                <a href="https://axis-manage.vercel.app" target="_blank"
+                    class="flex items-center gap-1.5 bg-indigo-50 text-indigo-700 border border-indigo-200 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider hover:bg-indigo-600 hover:text-white transition-all duration-300 group">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500 group-hover:bg-white transition-colors duration-300"></span>
+                    </span>
+                    Axis Manage
+                </a>
+            </div>
 
+            <!-- GitHub İkonu -->
             <a href="https://github.com/MelikTecir/axis-creator" target="_blank"
                 class="text-gray-400 hover:text-black transition-colors duration-200">
                 <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
@@ -47,6 +62,7 @@
                 </svg>
             </a>
         </div>
+
 
         <div class="space-y-2">
             <div>
