@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Axis Education Manager v2.7.4</title>
+    <title>Axis Education Manager v2.7.5</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,9 +34,7 @@
     <!-- Sol Panel -->
     <div
         class="w-full md:w-96 bg-white shadow-2xl p-6 no-print md:sticky md:top-0 md:h-screen overflow-y-auto flex-shrink-0 z-10">
-            
-
-                <div class="flex justify-between items-center mb-4 border-b-2 border-gray-100 pb-2">
+        <div class="flex justify-between items-center mb-4 border-b-2 border-gray-100 pb-2">
             <h1 class="text-xl font-black text-gray-800 uppercase tracking-tighter">
                 Program Ayarları
             </h1>
@@ -49,35 +47,6 @@
                 </svg>
             </a>
         </div>
-
-        <!-- Axis Manage Dikkat Çekici Yönlendirme Butonu -->
-        <a href="https://axis-manage.vercel.app" target="_blank"
-            class="relative flex items-center justify-between w-full p-3.5 mb-5 rounded-xl bg-gradient-to-br from-indigo-700 via-purple-700 to-indigo-900 text-white shadow-lg shadow-purple-200/50 hover:shadow-purple-300/80 hover:-translate-y-0.5 transition-all duration-300 active:scale-95 group overflow-hidden border border-purple-500/30">
-            
-            <!-- Hover Işık Efekti -->
-            <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-
-            <div class="flex flex-col relative z-10">
-                <span class="text-[9px] font-bold text-purple-200 uppercase tracking-widest mb-0.5 flex items-center gap-1.5">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-300 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-100"></span>
-                    </span>
-                    YENİ NESİL KURUMSAL ALTYAPI
-                </span>
-                <span class="text-sm font-black tracking-wide drop-shadow-md">
-                    AXIS MANAGE'I İNCELE
-                </span>
-            </div>
-            
-            <!-- Sağdaki Ok İkonu -->
-            <div class="relative z-10 bg-white/10 p-2 rounded-lg group-hover:bg-white/20 transition-colors">
-                <svg class="w-5 h-5 text-white transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                </svg>
-            </div>
-        </a>
-
 
         <div class="space-y-2">
             <div>
@@ -93,9 +62,7 @@
                     <option value="0">Pazartesi</option>
                     <option value="1">Salı</option>
                     <option value="2">Çarşamba</option>
-                    <option valu
-                        
-                        e="3">Perşembe</option>
+                    <option value="3">Perşembe</option>
                     <option value="4">Cuma</option>
                     <option value="5">Cumartesi</option>
                     <option value="6">Pazar</option>
@@ -121,6 +88,12 @@
                     <button id="btn-6"
                         class="flex-1 text-[10px] font-bold py-1.5 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
                         onclick="setCategoryFilter('6. Sınıf')">6. SINIF</button>
+                    <button id="btn-maarif-tyt"
+                        class="flex-1 text-[10px] font-bold py-1.5 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
+                        onclick="setCategoryFilter('MAARİF TYT')">MAARİF TYT</button>
+                    <button id="btn-maarif-ayt"
+                        class="flex-1 text-[10px] font-bold py-1.5 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
+                        onclick="setCategoryFilter('MAARİF AYT')">MAARİF AYT</button>
                 </div>
 
                 <!-- Alt başlıklar (Ders isimleri) için alan -->
