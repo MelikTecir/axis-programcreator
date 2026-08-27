@@ -57,7 +57,8 @@ function setCategoryFilter(category) {
         '7. Sınıf': 'btn-7',
         '6. Sınıf': 'btn-6',
         'MAARİF TYT': 'btn-maarif-tyt',
-        'MAARİF AYT': 'btn-maarif-ayt'
+        'MAARİF AYT': 'btn-maarif-ayt',
+        'MAARİF LGS': 'btn-maarif-lgs'
     };
 
     Object.values(btnIds).forEach(id => {

@@ -851,5 +851,66 @@
         "Hukuk ve Felsefe",
         "Genel Tekrar",
         "Genel Deneme"
+    ],
+    "MAARİF LGS Türkçe": [
+        "İletişim ve Sosyal İlişkiler",
+        "Vatan Sevgisi",
+        "Doğa ve İnsan",
+        "Türk Hikaye Geleneği ve Destanları",
+        "Sanat ve Estetik",
+        "Akademik Düşünme Dünyası",
+        "Genel Tekrar",
+        "Genel Deneme"
+    ],
+    "MAARİF LGS Matematik": [
+        "Sayılar ve Nicelikler",
+        "Cebirsel Düşünme ve Değişimler",
+        "Geometrik Şekiller",
+        "Geometrik Nicelikler",
+        "Dönüşüm",
+        "İstatistiksel Araştırma Süreci",
+        "Veriden Olasılığa",
+        "Genel Tekrar",
+        "Genel Deneme"
+    ],
+    "MAARİF LGS Fen Bilimleri": [
+        "Mevsimler ve İklim",
+        "Yaşamı Kolaylaştıran Kuvvet",
+        "Yaşamın Gizemi",
+        "Sesin Dünyası",
+        "Periyodik Tablo ve Maddenin Etkileşimi",
+        "Elektriğin Yolculuğu",
+        "Sürdürülebilir Yaşam ve Madde Döngüleri",
+        "Genel Tekrar",
+        "Genel Deneme"
+    ],
+    "MAARİF LGS İnkılap Tarihi": [
+        "Mustafa Kemalin Hayatı",
+        "Birinci Dünya Savaşı",
+        "Milli Mücadele",
+        "Türkiye Cumhuriyetinin Kuruluşu ve İnkılaplar",
+        "Genel Tekrar",
+        "Genel Deneme"
+    ],
+    "MAARİF LGS İngilizce": [
+        "School Life & Education",
+        "Classroom Life &Learning",
+        "Personal Life & Well-Being",
+        "Family Life & Home",
+        "Life In The Neighbourhood & City & Social Life",
+        "Life In The World And Culture",
+        "Life In Nature & Global Problems",
+        "Life In The Universe & Future",
+        "Genel Tekrar",
+        "Genel Deneme"
+    ],
+    "MAARİF LGS Din Kültürü": [
+        "Kader İnancı",
+        "Zekat ve Sadaka",
+        "Din ve Sosyal Hayat",
+        "Kuran ve İnsan",
+        "Müslümanların Bilim ve Kültüre Katkısı",
+        "Genel Tekrar",
+        "Genel Deneme"
     ]
 }
